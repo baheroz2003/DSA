@@ -69,4 +69,15 @@ vector<vector<int>> combinationSum(vector<int>& nums, int target) {
     combinationHelper(0, nums, target, ds, result);
     return result;
 }
+#type 4 include or exclude that is in binary strings or subsequences
+void subsequenceHelper(int index, vector<int>& nums, vector<int>& ds, vector<vector<int>>& result) {
+    if (index == nums.size()) {
+        result.push_back(ds);
+        return;
+    }
+    ds.push_back(nums[index]);
+    subsequenceHelper(index + 1, nums, ds, result);
+    ds.pop_back();
+    subsequenceHelper(index + 1, nums, ds, result);
+}
 
