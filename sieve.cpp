@@ -36,3 +36,19 @@ void seive(int n) {
         }
     }
 }
+
+
+#3
+     vector<bool> store; 
+    void seive(int n) {
+        store.assign(n, true);
+        store[0] = false;
+        store[1] = false;
+        for (int i = 2; i * i < n; i++) {
+            if (store[i]) {
+                for (int j = i * i; j < n; j += i) {
+                    store[j] = false;
+                }
+            }
+        }
+    }
