@@ -58,3 +58,57 @@ int main() {
     cout << "NGL: "; for(auto x : ngl) cout << x << " "; cout << "\n";
     cout << "NGR: "; for(auto x : ngr) cout << x << " "; cout << "\n";
 }
+//in terms of index also
+#include <bits/stdc++.h>
+using namespace std;
+
+void computeIndexes(vector<int>& arr) {
+    int n = arr.size();
+
+    vector<int> NSL(n), NSR(n), NGL(n), NGR(n);
+    stack<int> st;
+
+    // NSL (Next Smaller to Left)
+    while (!st.empty()) st.pop();
+    for (int i = 0; i < n; i++) {
+        while (!st.empty() && arr[st.top()] >= arr[i]) st.pop();
+        NSL[i] = st.empty() ? -1 : st.top();
+        st.push(i);
+    }
+
+    // NSR (Next Smaller to Right)
+    while (!st.empty()) st.pop();
+    for (int i = n - 1; i >= 0; i--) {
+        while (!st.empty() && arr[st.top()] > arr[i]) st.pop();
+        NSR[i] = st.empty() ? n : st.top();
+        st.push(i);
+    }
+
+    // NGL (Next Greater to Left)
+    while (!st.empty()) st.pop();
+    for (int i = 0; i < n; i++) {
+        while (!st.empty() && arr[st.top()] <= arr[i]) st.pop();
+        NGL[i] = st.empty() ? -1 : st.top();
+        st.push(i);
+    }
+
+    // NGR (Next Greater to Right)
+    while (!st.empty()) st.pop();
+    for (int i = n - 1; i >= 0; i--) {
+        while (!st.empty() && arr[st.top()] < arr[i]) st.pop();
+        NGR[i] = st.empty() ? n : st.top();
+        st.push(i);
+    }
+
+    // Print results
+    cout << "NSL: "; for (int x : NSL) cout << x << " "; cout << "\n";
+    cout << "NSR: "; for (int x : NSR) cout << x << " "; cout << "\n";
+    cout << "NGL: "; for (int x : NGL) cout << x << " "; cout << "\n";
+    cout << "NGR: "; for (int x : NGR) cout << x << " "; cout << "\n";
+}
+
+int main() {
+    vector<int> arr = {3, 1, 2, 4};
+    computeIndexes(arr);
+    return 0;
+}
