@@ -141,3 +141,70 @@ int main(){
     root->right = new Node(3);
     root->left->right = new Node(4);
 }
+
+
+
+
+
+////2time bfs way
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
+        unordered_map<TreeNode*, TreeNode*> parentMap;
+        queue<TreeNode*> q;
+        q.push(root);
+
+        // Build parent map using BFS
+        while (!q.empty()) {
+            TreeNode* curr = q.front(); q.pop();
+            if (curr->left) {
+                parentMap[curr->left] = curr;
+                q.push(curr->left);
+            }
+            if (curr->right) {
+                parentMap[curr->right] = curr;
+                q.push(curr->right);
+            }
+        }
+
+        unordered_set<TreeNode*> visited;
+        q.push(target);
+        visited.insert(target);
+
+        int level = 0;
+
+        // BFS to find nodes at distance k
+        while (!q.empty()) {
+            if (level == k) break;
+            int size = q.size();
+            while (size--) {
+                TreeNode* curr = q.front(); q.pop();
+                for (TreeNode* x : {curr->left, curr->right, parentMap[curr]}) {
+                    if (x && !visited.count(x)) {
+                        visited.insert(x);
+                        q.push(x);
+                    }
+                }
+            }
+            level++;
+        }
+
+        // Collect all node values at distance k
+        vector<int> result;
+        while (!q.empty()) {
+            result.push_back(q.front()->val);
+            q.pop();
+        }
+        return result;
+    }
+};
+
