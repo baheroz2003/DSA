@@ -1,0 +1,103 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+// ---------- DFS ----------
+void dfs(int node, vector<vector<int>> &adj, vector<int> &vis) {
+    vis[node] = 1;
+    for (auto nei : adj[node]) {
+        if (!vis[nei]) {
+            dfs(nei, adj, vis);
+        }
+    }
+}
+
+// ---------- BFS ----------
+void bfs(int start, vector<vector<int>> &adj, vector<int> &vis) {
+    queue<int> q;
+    q.push(start);
+    vis[start] = 1;
+
+    while (!q.empty()) {
+        int node = q.front(); q.pop();
+        for (auto nei : adj[node]) {
+            if (!vis[nei]) {
+                vis[nei] = 1;
+                q.push(nei);
+            }
+        }
+    }
+}
+
+// ---------- Cycle detection (Undirected) ----------
+bool dfsCycle(int node, int parent, vector<vector<int>> &adj, vector<int> &vis) {
+    vis[node] = 1;
+    for (auto nei : adj[node]) {
+        if (nei == parent) continue;
+        if (vis[nei]) return true;
+        if (dfsCycle(nei, node, adj, vis)) return true;
+    }
+    return false;
+}
+
+// ---------- Cycle detection (Directed) ----------
+bool dfsDirected(int node, vector<vector<int>> &adj, vector<int> &vis, vector<int> &pathVis) {
+    vis[node] = 1;
+    pathVis[node] = 1;
+
+    for (auto nei : adj[node]) {
+        if (!vis[nei]) {
+            if (dfsDirected(nei, adj, vis, pathVis)) return true;
+        } else if (pathVis[nei]) {
+            return true; // back edge
+        }
+    }
+    pathVis[node] = 0;
+    return false;
+}
+
+// ---------- Build Graph ----------
+vector<vector<int>> buildAdjList(int n, vector<pair<int,int>> &edges, bool undirected = true) {
+    vector<vector<int>> adj(n);
+    for (auto &e : edges) {
+        int u = e.first, v = e.second;
+        adj[u].push_back(v);
+        if (undirected) adj[v].push_back(u);
+    }
+    return adj;
+}
+
+// ---------- Main usage example ----------
+int main() {
+    int n = 5;
+    vector<pair<int,int>> edges = {{0,1},{0,2},{1,2},{2,3}};
+
+    // Build adjacency list (undirected)
+    vector<vector<int>> adj = buildAdjList(n, edges);
+
+    // DFS Example
+    vector<int> vis(n, 0);
+    cout << "DFS: ";
+    dfs(0, adj, vis);
+    for(int i=0;i<n;i++) if(vis[i]) cout << i << " ";
+    cout << "\n";
+
+    // BFS Example
+    fill(vis.begin(), vis.end(), 0);
+    cout << "BFS: ";
+    bfs(0, adj, vis);
+    for(int i=0;i<n;i++) if(vis[i]) cout << i << " ";
+    cout << "\n";
+
+    // Cycle Detection (Undirected)
+    fill(vis.begin(), vis.end(), 0);
+    bool hasCycle = false;
+    for (int i = 0; i < n; i++) {
+        if (!vis[i] && dfsCycle(i, -1, adj, vis)) {
+            hasCycle = true;
+            break;
+        }
+    }
+    cout << "Has cycle (undirected)? " << (hasCycle ? "Yes" : "No") << "\n";
+
+    return 0;
+}
