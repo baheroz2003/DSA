@@ -93,6 +93,36 @@ Node* deleteTail(Node* head) {
     return head;
 }
 
+Node* deleteAtPosition(Node* head, int pos) {
+    if (head == nullptr) return nullptr;
+
+    // Agar pehla node delete karna hai
+    if (pos <= 1) {
+        Node* temp = head;
+        head = head->next;
+        delete temp;
+        return head;
+    }
+
+    Node* temp = head;
+    int count = 1;
+    while (temp != nullptr && count < pos - 1) {
+        temp = temp->next;
+        count++;
+    }
+
+    // Agar position invalid hai
+    if (temp == nullptr || temp->next == nullptr) {
+        return head;
+    }
+
+    Node* delNode = temp->next;
+    temp->next = temp->next->next;
+    delete delNode;
+
+    return head;
+}
+
 Node* insertHead(Node* head, int val) {
     Node* newNode = new Node(val);
     newNode->next = head;
@@ -186,6 +216,10 @@ int main() {
 
     head = deleteTail(head);
     cout << "After deleting tail: ";
+    printLL(head);
+
+    head = deleteAtPosition(head, 3);
+    cout << "After deleting node at position 3: ";
     printLL(head);
 
     return 0;
