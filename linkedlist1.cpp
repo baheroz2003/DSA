@@ -1,5 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
+
 struct Node {
     int data;
     Node* next;
@@ -8,6 +9,7 @@ struct Node {
         next = nullptr;
     }
 };
+
 Node* convertToLL(vector<int>& arr) {
     if (arr.empty()) return nullptr;
     Node* head = new Node(arr[0]);
@@ -91,6 +93,60 @@ Node* deleteTail(Node* head) {
     return head;
 }
 
+Node* insertHead(Node* head, int val) {
+    Node* newNode = new Node(val);
+    newNode->next = head;
+    return newNode;
+}
+
+Node* insertTail(Node* head, int val) {
+    Node* newNode = new Node(val);
+    if (head == nullptr) return newNode;
+    Node* temp = head;
+    while (temp->next != nullptr) {
+        temp = temp->next;
+    }
+    temp->next = newNode;
+    return head;
+}
+
+Node* insertAtPosition(Node* head, int pos, int val) {
+    if (pos <= 1 || head == nullptr) {
+        return insertHead(head, val);
+    }
+    Node* newNode = new Node(val);
+    Node* temp = head;
+    int count = 1;
+    while (temp != nullptr && count < pos - 1) {
+        temp = temp->next;
+        count++;
+    }
+    if (temp == nullptr) {
+        return insertTail(head, val);
+    }
+    newNode->next = temp->next;
+    temp->next = newNode;
+    return head;
+}
+
+Node* insertBeforeValue(Node* head, int target, int val) {
+    if (head == nullptr) return nullptr;
+    if (head->data == target) {
+        return insertHead(head, val);
+    }
+    Node* temp = head;
+    while (temp->next != nullptr && temp->next->data != target) {
+        temp = temp->next;
+    }
+    if (temp->next == nullptr) {
+        return head;
+    }
+    Node* newNode = new Node(val);
+    newNode->next = temp->next;
+    temp->next = newNode;
+    return head;
+}
+
 int main() {
     vector<int> arr = {10, 20, 30, 40, 50};
     Node* head = convertToLL(arr);
@@ -101,16 +157,31 @@ int main() {
     cout << "Length of LL: " << lengthLL(head) << endl;
 
     int key = 30;
-    cout << "Searching " << key << ": " 
-         << (searchLL(head, key) ? "Found ✅" : "Not Found ❌") 
-         << endl;
+    cout << "Searching " << key << ": "
+         << (searchLL(head, key) ? "Found ✅" : "Not Found ❌") << endl;
+
+    head = insertHead(head, 5);
+    cout << "After inserting 5 at head: ";
+    printLL(head);
+
+    head = insertTail(head, 60);
+    cout << "After inserting 60 at tail: ";
+    printLL(head);
+
+    head = insertAtPosition(head, 3, 15);
+    cout << "After inserting 15 at position 3: ";
+    printLL(head);
+
+    head = insertBeforeValue(head, 40, 35);
+    cout << "After inserting 35 before 40: ";
+    printLL(head);
 
     head = deleteHead(head);
     cout << "After deleting head: ";
     printLL(head);
 
-    head = deleteByValue(head, 40);
-    cout << "After deleting 40: ";
+    head = deleteByValue(head, 20);
+    cout << "After deleting value 20: ";
     printLL(head);
 
     head = deleteTail(head);
