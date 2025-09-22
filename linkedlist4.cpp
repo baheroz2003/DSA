@@ -137,6 +137,39 @@ class Solution {
         return head; 
     }
 };
+#reverse in k groups
+class Solution {
+public:
+    ListNode* reverseKGroup(ListNode* head, int k) {
+        if (!head) return nullptr;
+        
+        ListNode* temp = head;
+        int count = 0;
+        while (temp && count < k) {
+            temp = temp->next;
+            count++;
+        }
+        if (count < k) return head;
 
+        ListNode* prev = nullptr;
+        ListNode* current = head;
+        ListNode* next = nullptr;
+        int cnt = 0;
+
+        while (current && cnt < k) {
+            next = current->next;
+            current->next = prev;
+            prev = current;
+            current = next;
+            cnt++;
+        }
+
+        if (next) {
+            head->next = reverseKGroup(next, k);
+        }
+
+        return prev;
+    }
+};
 
     
