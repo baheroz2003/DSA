@@ -43,3 +43,31 @@ public:
        return slow; 
     }
 };
+#starting point of linkedlist
+Node* getStartingNode(Node* head){
+    if(!head)return NULL;
+    Node* slow=head;
+    Node* fast=head;
+    while(fast && fast->next){
+    slow=slow->next;
+    fast=fast->next->next;
+    if(slow==fast){
+    Node* slow=head;
+    while(slow!=fast){
+    slow=slow->next;
+    fast=fast->next;
+    }
+return slow;
+    }
+#remove the loops
+if(!head)return NULL;
+Node* startofloop=getStartingNode(head);
+Node* temp=startOfLoop;
+while(temp->next!=startofLoop){
+temp=temp->next;
+}
+temp->next=NULL;
+return head; 
+
+
+    
