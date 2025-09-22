@@ -68,6 +68,75 @@ temp=temp->next;
 }
 temp->next=NULL;
 return head; 
+#remove duplicates from the sorted list
+class Solution {
+public:
+    ListNode* deleteDuplicates(ListNode* head) {
+        if(!head)return NULL;
+        ListNode* curr=head;
+        while(curr!=NULL){
+            if((curr->next!=nullptr) &&curr->val==curr->next->val){
+                ListNode* next=curr->next->next;
+                ListNode* to_del=curr->next;
+                delete(to_del);
+                curr->next=next;
+            }
+            else{
+                curr=curr->next;
+            }
+        }
+        return head; 
+    }
+};
+#remove duplicated from unsorted list
+#method-1:
+class Solution {
+  public:
+    Node *removeDuplicates(Node *head) {
+    if (!head) return nullptr;
+    unordered_set<int> st;
+    Node* temp = head;
+    Node* prev = nullptr;
+    while (temp != nullptr) {
+        if (!st.count(temp->data)) {
+             st.insert(temp->data);
+            prev = temp;
+            temp = temp->next;
+        } else {
+            prev->next = temp->next;
+            Node* toDelete = temp;
+            temp = temp->next;
+            delete toDelete;
+        }
+    }
+    return head;
+    }
+};
+#method-2
+class Solution {
+  public:
+    Node *removeDuplicates(Node *head) {
+     if(!head)return NULL;
+        Node* curr=head;
+        while(curr->next!=NULL){
+            Node* temp=curr;
+            while(temp->next){
+            if(curr->data==temp->next->data){
+                Node* next=temp->next->next;
+                Node* to_del=temp->next;
+                delete(to_del);
+                temp->next=next;
+            }
+            else{
+                temp=temp->next;
+            }
+            }
+            curr=curr->next;
+            
+        }
+        return head; 
+    }
+};
 
 
     
