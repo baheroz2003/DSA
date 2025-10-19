@@ -44,3 +44,29 @@ int main(){
     recure(0,0,5,res,ds);
     return 0;
 }
+#3print only one subsequence:
+#include <bits/stdc++.h>
+using namespace std;
+bool recure(int idx,int s,int target,vector<int>&res,vector<int>&ds){
+    if(idx>=res.size()){
+        if(s==target){
+            for(auto x:ds){
+                cout<<x<<" ";
+            }
+            cout<<"\n";
+            return true;
+        }
+        return false;
+    }
+    ds.push_back(res[idx]);
+    if(recure(idx+1,s+res[idx],target,res,ds)==true)return true;
+    ds.pop_back();
+    if(recure(idx+1,s,target,res,ds)==true)return true;
+    return false;
+}
+int main(){
+    vector<int>res={1,2,3,4};
+    vector<int>ds;
+    recure(0,0,5,res,ds);
+    return 0;
+}
