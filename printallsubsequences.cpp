@@ -70,3 +70,27 @@ int main(){
     recure(0,0,5,res,ds);
     return 0;
 }
+#count subsequence with sum=k
+#include <bits/stdc++.h>
+using namespace std;
+int recure(int idx,int s,int target,vector<int>&res,vector<int>&ds){
+    if(idx>=res.size()){
+        if(s==target){
+            return 1;
+            }
+            else{
+                return 0;
+            }
+        }
+    ds.push_back(res[idx]);
+    int l=recure(idx+1,s+res[idx],target,res,ds);
+    ds.pop_back();
+    int r=recure(idx+1,s,target,res,ds);
+    return l+r;
+}
+int main(){
+    vector<int>res={1,2,3,4};
+    vector<int>ds;
+    cout<<recure(0,0,5,res,ds);
+    return 0;
+}
