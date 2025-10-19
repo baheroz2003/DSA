@@ -5,6 +5,7 @@ vector<vector<int>> result;
 void recure(int idx, vector<int>& res) {
     if (idx >= res.size()) {
         for (auto x : ans) cout << x << " ";
+        if(ans.size()==0)cout<<"{}";
         cout << endl;
         result.push_back(ans);
         return;
