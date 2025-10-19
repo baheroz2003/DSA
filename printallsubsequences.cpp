@@ -20,3 +20,27 @@ int main() {
     recure(0, res);
     return 0;
 }
+#problem 2:print subsequence with sum=k
+#include <bits/stdc++.h>
+using namespace std;
+void recure(int idx,int s,int target,vector<int>&res,vector<int>&ds){
+    if(idx>=res.size()){
+        if(s==target){
+            for(auto x:ds){
+                cout<<x<<" ";
+            }
+            cout<<"\n";
+        }
+        return;
+    }
+    ds.push_back(res[idx]);
+    recure(idx+1,s+res[idx],target,res,ds);
+    ds.pop_back();
+    recure(idx+1,s,target,res,ds);
+}
+int main(){
+    vector<int>res={1,2,3,4};
+    vector<int>ds;
+    recure(0,0,5,res,ds);
+    return 0;
+}
