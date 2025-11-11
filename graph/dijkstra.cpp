@@ -41,3 +41,42 @@ int main() {
     cout << '\n';
     return 0;
 }
+//method 2:
+#include <bits/stdc++.h>
+using namespace std;
+void solve(map<int,vector<pair<int,int>>>&adj,vector<int>&dist,int src){
+    priority_queue<vector<int>,vector<vector<int>>,greater<vector<int>>>pq;
+    pq.push({0,src});
+    dist[src]=0;
+    while(!pq.empty()){
+        auto vec=pq.top();
+        pq.pop();
+        int d=vec[0];
+        int node=vec[1];
+        if(d>dist[node])continue;
+        for(auto it:adj[node]){
+            int next=it.first;
+            int wt=it.second;
+            if(dist[next]>wt+d){
+                dist[next]=wt+d;
+                pq.push({dist[next],next});
+            }
+        }
+    }
+}
+int main() {
+    map<int, vector<pair<int,int>>> adj;
+    adj[0].push_back({1, 4});
+    adj[0].push_back({2, 1});
+    adj[2].push_back({1, 2});
+    adj[1].push_back({3, 1});
+    adj[2].push_back({3, 5});
+    int n = 4;
+    vector<int> dist(n, 1e9);
+    solve(adj, dist, 0);
+    for (int i = 0; i < n; i++) {
+        cout << "Node " << i << " -> " << dist[i] << endl;
+    }
+    return 0;
+}
+
