@@ -61,3 +61,35 @@ int main() {
     int totalWeight = solve(n, adj);
     cout << totalWeight;
 }
+//method 2
+class Solution {
+  public:
+    int spanningTree(int V, vector<vector<int>>& edges) {
+        map<int,vector<pair<int,int>>>adj;
+        for (auto it : edges) {
+            adj[it[0]].push_back({it[1], it[2]});
+            adj[it[1]].push_back({it[0], it[2]});
+        }
+    priority_queue<vector<int>, vector<vector<int>>, greater<vector<int>>>pq;
+    pq.push({0,0});
+    vector<bool>visited(V,0);
+    int ans=0;
+    while(!pq.empty()){
+        auto p=pq.top();
+        pq.pop();
+        int wt=p[0];
+        int node=p[1];
+        if(visited[node]==1)continue;
+        visited[node]=1;
+        ans+=wt;
+        for(auto it:adj[node]){
+            int pwt=it.second;
+            int par=it.first;
+            if(visited[par]==0){
+                pq.push({pwt,par});
+            }
+        }
+    }
+        return ans;
+    }
+};
