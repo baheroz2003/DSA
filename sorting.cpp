@@ -61,6 +61,41 @@ void mergeSort(int arr[], int l, int r) {
         merge(arr, l, m, r);
     }
 }
+//type 2 
+#include <bits/stdc++.h>
+using namespace std;
+void merge(vector<int>&arr,int l,int m,int h){
+    vector<int>left;
+    vector<int>right;
+    for(int i=l;i<=m;i++){
+        left.push_back(arr[i]);
+    }
+    for(int i=m+1;i<=h;i++){
+        right.push_back(arr[i]);
+    }
+    int i=0,j=0,k=l;
+    while(i<left.size() && j<right.size()){
+        if(left[i]<=right[j])arr[k++]=left[i++];
+        else arr[k++]=right[j++];
+    }
+    while(i<left.size())arr[k++]=left[i++];
+    while(j<right.size())arr[k++]=right[j++];
+}
+void mergesort(int l,int h,vector<int>&arr){
+    if(l<h){
+        int m=(l+h)/2;
+        mergesort(l,m,arr);
+        mergesort(m+1,h,arr);
+        merge(arr,l,m,h);
+    }
+}
+int main(){
+    vector<int>arr={2,8,7,5,6};
+    mergesort(0,4,arr);
+    for(auto x:arr)cout<<x<<" ";
+    return 0;
+}
+/////
 int partition(int arr[], int low, int high) {
     int pivot = arr[high];
     int i = low - 1;
@@ -91,5 +126,6 @@ void cyclicSort(int arr[], int n) {
         }
     }
 }
+
 
 
